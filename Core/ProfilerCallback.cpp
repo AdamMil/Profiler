@@ -17,15 +17,12 @@ __declspec(naked) static void RawEnterFunction(FunctionID funcID, UINT_PTR clien
 { __asm
   { 
     push eax
-    push edx
-    rdtsc
     push ecx
     push edx
-    push eax
-    push [DWORD PTR esp+24]
+    push [DWORD PTR esp+16]
     call ProfilerCallback::EnterFunction
-    pop ecx
     pop edx
+    pop ecx
     pop eax
     ret 16
   }
@@ -137,6 +134,7 @@ HRESULT ProfilerCallback::Initialize(IUnknown *pICorProfilerInfo)
   return hr;
 }
 
+#include <stdio.h>
 HRESULT ProfilerCallback::Shutdown()
 { // if we have an ICorProfilerInfo2 pointer, release it.
   if(m_pProfInfo!=NULL) { m_pProfInfo->Release(); m_pProfInfo = NULL; }
@@ -166,9 +164,9 @@ ThreadInfo * ProfilerCallback::GetThreadInfo(ThreadID thread)
   return ret;
 }
 
-void ProfilerCallback::EnterFunction(FunctionID func, UINT64 time)
-{ assert(g_pProfiler);
-  g_pProfiler->GetCurrentThreadInfo()->EnterFunction(func, time);
+void ProfilerCallback::EnterFunction(FunctionID func)
+{ assert(g_pProfiler && func);
+  g_pProfiler->GetCurrentThreadInfo()->EnterFunction(func);
 }
 
 void ProfilerCallback::LeaveFunction(UINT64 time)
@@ -177,10 +175,10 @@ void ProfilerCallback::LeaveFunction(UINT64 time)
 }
 
 void ProfilerCallback::TailcallFunction(FunctionID func, UINT64 time)
-{ assert(g_pProfiler);
+{ assert(g_pProfiler && func);
   ThreadInfo *pThread = g_pProfiler->GetCurrentThreadInfo();
   pThread->LeaveFunction(time);
-  pThread->EnterFunction(func, time);
+  pThread->EnterFunction(func);
 }
 
 // not interested in these...

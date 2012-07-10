@@ -125,7 +125,7 @@ class ProfilerCallback : public ICorProfilerCallback2
   Hashtable<ThreadID,ThreadInfo*> *m_pThreadMap;
   LONG m_nRefCnt;
   
-  static void __stdcall EnterFunction(FunctionID func, UINT64 time);
+  static void __stdcall EnterFunction(FunctionID func);
   static void __stdcall LeaveFunction(UINT64 time);
   static void __stdcall TailcallFunction(FunctionID func, UINT64 time);
 };
