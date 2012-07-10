@@ -4,8 +4,8 @@
 
 FunctionInfo::FunctionInfo(FunctionID id) : ID(id)
 { m_pChildMap = NULL;
-  Time        = RecursiveTime = SuspendTime = 0;
-  NumCalls    = Depth = 0;
+  Time        = SuspendTime = 0;
+  NumCalls    = 0;
 }
 
 FunctionInfo::~FunctionInfo()

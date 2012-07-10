@@ -6,7 +6,7 @@ class FunctionInfo;
 
 struct StackFrame
 { StackFrame() { }
-  StackFrame(FunctionInfo *pFunc, UINT64 time) { Function=pFunc; StartTime=time; }
+  StackFrame(FunctionInfo *pFunc) { Function=pFunc; StartTime=rdtsc(); }
   UINT64 StartTime;
   FunctionInfo *Function;
 };
@@ -26,8 +26,8 @@ class ThreadInfo
   void Suspend(UINT64 time);
   void Resume(UINT64 time);
 
-  void EnterFunction(FunctionID func, UINT64 time);
-  UINT64 LeaveFunction(UINT64 time);
+  void EnterFunction(FunctionID func);
+  void LeaveFunction(UINT64 time);
 
   private: UINT64 m_startTime, m_endTime, m_suspendStart, m_suspendTime;
   public: const ThreadID ID; // this is placed here because I want the 64-bit members first

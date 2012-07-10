@@ -4,9 +4,9 @@
 template<typename K, typename V> class Hashtable;
 
 struct ChildInfo
-{ ChildInfo() { Time=RecursiveTime=0; NumCalls=Depth=0; }
-  UINT64 Time, RecursiveTime;
-  UINT NumCalls, Depth;
+{ ChildInfo() { Time=0; NumCalls=0; }
+  UINT64 Time;
+  UINT NumCalls;
 };
 
 class FunctionInfo
@@ -16,12 +16,12 @@ class FunctionInfo
 
   ChildInfo & GetChildInfo(FunctionInfo *pFunc);
 
-  UINT64 Time, RecursiveTime, SuspendTime;
-  UINT32 NumCalls, Depth;
+  UINT64 Time, SuspendTime;
+  UINT32 NumCalls;
   const FunctionID ID;
   
   private:
-  Hashtable<FunctionID, ChildInfo*> *m_pChildMap;
+  Hashtable<FunctionID,ChildInfo*> *m_pChildMap;
 };
 
 #endif // FUNCTIONINFO_H_INC
